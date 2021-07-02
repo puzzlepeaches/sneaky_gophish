@@ -1,6 +1,7 @@
 # sneaky_gophish
 Hiding GoPhish from the boys in blue! See my blog article linked below for details on all the changes made during compilation of GoPhish before using!
 
+* [Never had a bad day phishing](https://www.sprocketsecurity.com/blog/never-had-a-bad-day-phishing-how-to-set-up-gophish-to-evade-security-controls)
 
 
 # Why?
