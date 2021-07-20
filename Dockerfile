@@ -61,6 +61,9 @@ RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/
 # Changing rid value
 RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
+# Getting rid of .gitignore
+RUN rm static/.gitignore
+
 RUN touch config.json.tmp
 
 EXPOSE 3333 8080
