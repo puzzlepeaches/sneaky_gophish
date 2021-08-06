@@ -17,6 +17,7 @@ RUN apt update && apt install git
 RUN mkdir -p /go/src/github.com/gophish/gophish
 WORKDIR /go/src/github.com/gophish/gophish
 RUN git clone https://github.com/gophish/gophish .
+COPY ./files/phish.go ./controllers/phish.go
 RUN go get -v && go build -v
 
 
@@ -36,7 +37,6 @@ COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
 COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
 COPY --from=build-golang /go/src/github.com/gophish/gophish/config.json ./
 COPY ./files/404.html ./templates/
-COPY ./files/phish.go ./controllers/phish.go
 RUN chown app. config.json
 
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
