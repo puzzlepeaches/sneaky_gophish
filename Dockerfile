@@ -17,7 +17,25 @@ RUN apt update && apt install git
 RUN mkdir -p /go/src/github.com/gophish/gophish
 WORKDIR /go/src/github.com/gophish/gophish
 RUN git clone https://github.com/gophish/gophish .
+
+# Stripping X-Gophish 
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
+RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
+
+# Stripping X-Gophish-Signature
+RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
+
+# Changing servername
+RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
+
+# Changing rid value
+RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
+
+# Copying in custom 404 handler
 COPY ./files/phish.go ./controllers/phish.go
+
 RUN go get -v && go build -v
 
 
@@ -45,21 +63,6 @@ USER app
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' config.json
 RUN sed -i 's/0.0.0.0:80/0.0.0.0:8080/g' config.json 
 
-# Stripping X-Gophish 
-USER root
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/maillog_test.go
-RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request.go
-
-# Stripping X-Gophish-Signature
-RUN sed -i 's/X-Gophish-Signature/X-Signature/g' webhook/webhook.go
-
-# Changing servername
-RUN sed -i 's/const ServerName = "gophish"/const ServerName = "IGNORE"/' config/config.go
-
-# Changing rid value
-RUN sed -i 's/const RecipientParameter = "rid"/const RecipientParameter = "keyname"/g' models/campaign.go
 
 RUN touch config.json.tmp
 
