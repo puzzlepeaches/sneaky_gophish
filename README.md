@@ -24,7 +24,7 @@ git clone https://github.com/puzzlepeaches/sneaky_gophish && \
 To actually run the container headlessly, run the following command:
 
 ```
-docker run -itd --name sneaky_gophish -p 3333:3333 -p 8080:8080 sneaky_gophish
+docker run -itd --name sneaky_gophish -p 3333:3333 -p 80:80 sneaky_gophish
 ```
 
 
