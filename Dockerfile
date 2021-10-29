@@ -13,10 +13,8 @@ RUN gulp
 # Build Golang binary
 FROM golang:1.15.2 AS build-golang
 
-RUN apt update && apt install git
-RUN mkdir -p /go/src/github.com/gophish/gophish
 WORKDIR /go/src/github.com/gophish/gophish
-RUN git clone https://github.com/gophish/gophish .
+COPY --from=build-js /build/ ./
 
 # Stripping X-Gophish 
 RUN sed -i 's/X-Gophish-Contact/X-Contact/g' models/email_request_test.go
